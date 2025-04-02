@@ -23,6 +23,7 @@ namespace DuiLib {
 	public:
 		CXmlNodeUI();
 		explicit CXmlNodeUI(PVOID node_struct);
+		explicit CXmlNodeUI(UINT_PTR node_struct);
 
 		typedef void (*unspecified_bool_type)(CXmlNodeUI***);
 		// Safe bool conversion operator
@@ -146,7 +147,7 @@ namespace DuiLib {
 		CXmlNodeUI find_child_by_attribute(LPCWSTR name, LPCWSTR attr_name, LPCTSTR attr_value);
 
 		// Get internal pointer
-		PVOID internal_object() const;
+		UINT_PTR internal_object() const;
 
 		//格式化为字符串
 		CDuiString ToString();

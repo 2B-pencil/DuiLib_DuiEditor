@@ -176,7 +176,15 @@ BEGIN_MESSAGE_MAP(CDuiEditorViewDesign, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_SET_ITEMFONT_PROPERTY, &CDuiEditorViewDesign::OnUpdateItemFontList)
 	ON_COMMAND_EX_RANGE(ID_FONT_LIST1, ID_FONT_LIST192, &CDuiEditorViewDesign::OnFontListRange)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_FONT_LIST1, ID_FONT_LIST192, &CDuiEditorViewDesign::OnUpdateFontListRange)
-END_MESSAGE_MAP()
+	ON_COMMAND(ID_FORMAT_MOVE_UP, &CDuiEditorViewDesign::OnFormatMoveUp)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_MOVE_UP, &CDuiEditorViewDesign::OnUpdateFormatMoveUp)
+	ON_COMMAND(ID_FORMAT_MOVE_DOWN, &CDuiEditorViewDesign::OnFormatMoveDown)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_MOVE_DOWN, &CDuiEditorViewDesign::OnUpdateFormatMoveDown)
+	ON_COMMAND(ID_FORMAT_MOVE_LEFT, &CDuiEditorViewDesign::OnFormatMoveLeft)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_MOVE_LEFT, &CDuiEditorViewDesign::OnUpdateFormatMoveLeft)
+	ON_COMMAND(ID_FORMAT_MOVE_RIGHT, &CDuiEditorViewDesign::OnFormatMoveRight)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_MOVE_RIGHT, &CDuiEditorViewDesign::OnUpdateFormatMoveRight)
+	END_MESSAGE_MAP()
 
 // CDuiEditorView 构造/析构
 
@@ -927,8 +935,7 @@ void CDuiEditorViewDesign::OnEditGenerateCode_IsMenuCommand()
 		CString sControlName = XML2T(pTrackElem->m_node.attribute(XTEXT("name")).as_string());
 
 		CString strText;
-		strText.Format(_T("if(IsMenuCommand(cmd, _T(\"%s\")))\r\n{\r\n\treturn;}"), sControlName);
-		strMuiltiText += _T("\r\n");
+		strText.Format(_T("if(IsMenuCommand(cmd, _T(\"%s\")))\r\n{\r\n\treturn true;\r\n}"), sControlName);
 		strMuiltiText += strText;
 	}	
 
@@ -1052,6 +1059,7 @@ void CDuiEditorViewDesign::OnFormatAlignLeft()
 			rc.right	= rc.left + rcElem.Width();
 			rc.top		= rcElem.top;
 			rc.bottom	= rcElem.bottom;
+			GetUIManager()->GetUiTracker()->m_pFocused->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 			xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 			GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 		}
@@ -1062,7 +1070,21 @@ void CDuiEditorViewDesign::OnFormatAlignLeft()
 
 void CDuiEditorViewDesign::OnUpdateFormatAlignLeft(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(GetUIManager()->GetUiTracker()->GetSize() > 1);
+	if(GetUIManager()->GetUiTracker()->GetSize() <= 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
 }
 
 
@@ -1083,6 +1105,7 @@ void CDuiEditorViewDesign::OnFormatAlignRight()
 			rc.right	= rcFocus.right;
 			rc.top		= rcElem.top;
 			rc.bottom	= rcElem.bottom;
+			GetUIManager()->GetUiTracker()->m_pFocused->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 			xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 			GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 		}
@@ -1093,7 +1116,21 @@ void CDuiEditorViewDesign::OnFormatAlignRight()
 
 void CDuiEditorViewDesign::OnUpdateFormatAlignRight(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(GetUIManager()->GetUiTracker()->GetSize() > 1);
+	if(GetUIManager()->GetUiTracker()->GetSize() <= 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
 }
 
 
@@ -1114,6 +1151,7 @@ void CDuiEditorViewDesign::OnFormatAlignTop()
 			rc.right	= rcElem.right;
 			rc.top		= rcFocus.top;
 			rc.bottom	= rcFocus.top + rcElem.Height();
+			GetUIManager()->GetUiTracker()->m_pFocused->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 			xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 			GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 		}
@@ -1124,7 +1162,21 @@ void CDuiEditorViewDesign::OnFormatAlignTop()
 
 void CDuiEditorViewDesign::OnUpdateFormatAlignTop(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(GetUIManager()->GetUiTracker()->GetSize() > 1);
+	if(GetUIManager()->GetUiTracker()->GetSize() <= 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
 }
 
 
@@ -1145,6 +1197,7 @@ void CDuiEditorViewDesign::OnFormatAlignBottom()
 			rc.right	= rcElem.right;
 			rc.top		= rcFocus.bottom - rcElem.Height();
 			rc.bottom	= rcFocus.bottom;
+			GetUIManager()->GetUiTracker()->m_pFocused->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 			xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 			GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 		}
@@ -1155,26 +1208,65 @@ void CDuiEditorViewDesign::OnFormatAlignBottom()
 
 void CDuiEditorViewDesign::OnUpdateFormatAlignBottom(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(GetUIManager()->GetUiTracker()->GetSize() > 1);
+	if(GetUIManager()->GetUiTracker()->GetSize() <= 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
 }
 
 void CDuiEditorViewDesign::OnFormatAlignCenterVert()
 {
 	CSciUndoBlock lock(GetUIManager()->GetCodeView()->GetSciWnd());
+
+	int top = 0;
+	int bottom = 0;
+	int total_height = 0;
+	CControlUI *pParent = NULL;
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		CRect rcElem = elem->m_pControl->GetPos();
+		if(i == 0)
+		{
+			top = rcElem.top;
+			pParent = elem->m_pControl->GetParent();
+			if(!pParent) return;
+		}
+		else
+		{
+			//确保拥有同一个父控件
+			if(elem->m_pControl->GetParent() == NULL || elem->m_pControl->GetParent() != pParent) 
+				return;
+		}
+		bottom = rcElem.bottom;
+	}
+
+	total_height = bottom - top;
+	CRect rcParent = pParent->GetPos();
+	int offset = (rcParent.Height() - total_height)/2 - top;
+
 	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
 	{
 		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
 		CRect rcElem = elem->m_pControl->GetPos();
 
-		CControlUI *pParent = elem->m_pControl->GetParent();
-		if(!pParent) continue;
-		CRect rcParent = pParent->GetPos();
-
 		CRect rc;
 		rc.left		= rcElem.left;
 		rc.right	= rc.left + rcElem.Width();
-		rc.top		= rcParent.top + (rcParent.Height() - rcElem.Height())/2;
+		rc.top		= rcElem.top + offset;
 		rc.bottom	= rc.top + rcElem.Height();
+		GetUIManager()->GetUiTracker()->m_pFocused->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 		xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 		GetUIManager()->UpdateControlUI(elem->m_node, attr);
 	}
@@ -1184,22 +1276,54 @@ void CDuiEditorViewDesign::OnFormatAlignCenterVert()
 
 void CDuiEditorViewDesign::OnUpdateFormatAlignCenterVert(CCmdUI *pCmdUI)
 {
-
+	if(GetUIManager()->GetUiTracker()->GetSize() < 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
 }
 
 
 void CDuiEditorViewDesign::OnFormatAlignCenterHori()
 {
 	CSciUndoBlock lock(GetUIManager()->GetCodeView()->GetSciWnd());
-	//多选和单选的居中, 是不一样的
-	if(GetUIManager()->GetUiTracker()->GetSize() > 1)
+	
+	int left = 0;
+	int right = 0;
+	int total_width = 0;
+	CControlUI *pParent = NULL;
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
 	{
-
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		CRect rcElem = elem->m_pControl->GetPos();
+		if(i == 0)
+		{
+			left = rcElem.left;
+			pParent = elem->m_pControl->GetParent();
+			if(!pParent) return;
+		}
+		else
+		{
+			//确保拥有同一个父控件
+			if(elem->m_pControl->GetParent() == NULL || elem->m_pControl->GetParent() != pParent) 
+				return;
+		}
+		right = rcElem.right;
 	}
-	else
-	{
 
-	}
+	total_width += right - left;
+	CRect rcParent = pParent->GetPos();
+	int offset = (rcParent.Width() - total_width)/2 - left;
 
 	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
 	{
@@ -1211,10 +1335,11 @@ void CDuiEditorViewDesign::OnFormatAlignCenterHori()
 		CRect rcParent = pParent->GetPos();
 
 		CRect rc;
-		rc.left		= rcParent.left + (rcParent.Width() - rcElem.Width())/2;
+		rc.left		= rcElem.left + offset;
 		rc.right	= rc.left + rcElem.Width();
 		rc.top		= rcElem.top;
-		rc.bottom	= rc.top + rcElem.Height();
+		rc.bottom	= rcElem.bottom;
+		GetUIManager()->GetUiTracker()->m_pFocused->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 		xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 		GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 	}
@@ -1224,7 +1349,21 @@ void CDuiEditorViewDesign::OnFormatAlignCenterHori()
 
 void CDuiEditorViewDesign::OnUpdateFormatAlignCenterHori(CCmdUI *pCmdUI)
 {
-
+	if(GetUIManager()->GetUiTracker()->GetSize() < 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
 }
 
 void CDuiEditorViewDesign::OnFormatAlignSameSpaceVert()
@@ -1284,6 +1423,7 @@ void CDuiEditorViewDesign::OnFormatAlignSameSpaceVert()
 		rc.right = rcElem.right;
 		rc.top	 = rcPre.bottom + nSpace;
 		rc.bottom = rc.top + rcElem.Height();
+		elem->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 		xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 		GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 	}
@@ -1293,7 +1433,7 @@ void CDuiEditorViewDesign::OnFormatAlignSameSpaceVert()
 
 void CDuiEditorViewDesign::OnUpdateFormatAlignSameSpaceVert(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(GetUIManager()->GetUiTracker()->GetSize() > 2);
+	pCmdUI->Enable(GetUIManager()->GetUiTracker()->GetSize() >= 2);
 }
 
 
@@ -1353,6 +1493,7 @@ void CDuiEditorViewDesign::OnFormatAlignSameSpaceHori()
 		rc.right = rc.left + rcElem.Width();
 		rc.top	 = rcElem.top;
 		rc.bottom = rcElem.bottom;
+		elem->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 		xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 		GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 	}
@@ -1382,6 +1523,7 @@ void CDuiEditorViewDesign::OnFormatSameWidth()
 			rc.right	= rc.left + rcFocus.Width();
 			rc.top		= rcElem.top;
 			rc.bottom	= rcElem.bottom;
+			elem->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 			xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 			GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 		}
@@ -1413,6 +1555,7 @@ void CDuiEditorViewDesign::OnFormatSameHeight()
 			rc.right	= rcElem.right;
 			rc.top		= rcElem.top;
 			rc.bottom	= rc.top + rcFocus.Height();
+			elem->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 			xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 			GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 		}
@@ -1444,6 +1587,7 @@ void CDuiEditorViewDesign::OnFormatSameSize()
 			rc.right	= rc.left + rcFocus.Width();
 			rc.top		= rcElem.top;
 			rc.bottom	= rc.top + rcFocus.Height();
+			elem->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
 			xml_attribute attr = g_duiProp.AddAttribute(elem->m_node, _T("pos"), RectToString(&rc),	GetUIManager());
 			GetUIManager()->UpdateControlUI(elem->m_node,  attr);
 		}
@@ -2292,4 +2436,107 @@ void CDuiEditorViewDesign::OnUpdateFontListRange(CCmdUI *pCmdUI)
 			}
 		}
 	}	
+}
+
+void CDuiEditorViewDesign::OnFormatMoveUp()
+{
+	GetUIManager()->GetUiTracker()->OnkeyUp();
+}
+
+
+void CDuiEditorViewDesign::OnUpdateFormatMoveUp(CCmdUI *pCmdUI)
+{
+	if(GetUIManager()->GetUiTracker()->GetSize() < 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
+}
+
+
+void CDuiEditorViewDesign::OnFormatMoveDown()
+{
+	GetUIManager()->GetUiTracker()->OnkeyDown();
+}
+
+
+void CDuiEditorViewDesign::OnUpdateFormatMoveDown(CCmdUI *pCmdUI)
+{
+	if(GetUIManager()->GetUiTracker()->GetSize() < 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
+}
+
+
+void CDuiEditorViewDesign::OnFormatMoveLeft()
+{
+	GetUIManager()->GetUiTracker()->OnkeyLeft();
+}
+
+
+void CDuiEditorViewDesign::OnUpdateFormatMoveLeft(CCmdUI *pCmdUI)
+{
+	if(GetUIManager()->GetUiTracker()->GetSize() < 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
+}
+
+
+void CDuiEditorViewDesign::OnFormatMoveRight()
+{
+	GetUIManager()->GetUiTracker()->OnkeyRight();
+}
+
+
+void CDuiEditorViewDesign::OnUpdateFormatMoveRight(CCmdUI *pCmdUI)
+{
+	if(GetUIManager()->GetUiTracker()->GetSize() < 1)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+	for (int i=0; i<GetUIManager()->GetUiTracker()->GetSize(); i++)
+	{
+		CUITrackerMuliti::CTrackerElement *elem = GetUIManager()->GetUiTracker()->m_arrTracker[i];
+		if(!elem->m_pControl->IsFloat())
+		{
+			pCmdUI->Enable(FALSE);
+			return;
+		}
+	}
+	pCmdUI->Enable(TRUE);
 }

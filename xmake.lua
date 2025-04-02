@@ -18,15 +18,19 @@ add_rules("plugin.compile_commands.autoupdate", { outputdir = "." })
 
 -- define target name rule
 function get_target_file_name(target_base_name)
-    if target_base_name == nil then
-        target_base_name = "Default"
-    end
-    local arch_suffix = is_arch("x64") and "64" or ""
-    local unicode_suffix = has_config("unicode", "true") and "u" or ""
-    local static_suffix = is_kind("static") and "s" or ""
-    local debug_suffix = is_mode("debug") and "d" or ""
+	if is_plat("windows") then
+		if target_base_name == nil then
+		    target_base_name = "Default"
+		end
+		local arch_suffix = is_arch("x64") and "64" or ""
+		local unicode_suffix = has_config("unicode", "true") and "u" or ""
+		local static_suffix = is_kind("static") and "s" or ""
+		local debug_suffix = is_mode("debug") and "d" or ""
 
-    return target_base_name.. "_".. arch_suffix.. unicode_suffix.. static_suffix.. debug_suffix
+		return target_base_name.. "_".. arch_suffix.. unicode_suffix.. static_suffix.. debug_suffix
+	else
+		return target_base_name
+	end
 end
 
 -- 公共的 GTK 相关包含目录配置
@@ -74,8 +78,8 @@ end
 
 --include project sources
 includes("DuiLib")
-includes("DuiScript")
 if is_plat("windows") then
+	includes("DuiScript")
 	includes("DuiPlugins")
 	includes("DuiPreviewer")
 	includes("DuiEditor")

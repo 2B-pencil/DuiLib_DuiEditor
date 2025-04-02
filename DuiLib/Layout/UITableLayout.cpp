@@ -536,7 +536,7 @@ namespace DuiLib
 			pTable->NeedUpdate();
 	}
 
-	RECT CTDUI::GetInset() const
+	CDuiRect CTDUI::GetInset() const
 	{
 		CTRUI *pRow = GetRow();
 		CTableLayoutUI *pTable = GetTable();
@@ -639,7 +639,7 @@ namespace DuiLib
 				needWidth = MulDiv(rcText.right - rcText.left + GetManager()->GetDPIObj()->ScaleInt(rcTextPadding.left) + GetManager()->GetDPIObj()->ScaleInt(rcTextPadding.right), 100, GetManager()->GetDPIObj()->GetScale());
 			}
 
-			RECT rcInset = GetInset();
+			CDuiRect rcInset = GetInset();
 			needWidth += rcInset.left + rcInset.right;
 			if(needWidth > GetFixedWidth())
 			{

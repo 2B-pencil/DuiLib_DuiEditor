@@ -53,9 +53,14 @@ CXmlNodeUI::CXmlNodeUI() : _root(0)
 
 CXmlNodeUI::CXmlNodeUI(PVOID node_struct) : _root(node_struct)
 {
+	
+}
+CXmlNodeUI::CXmlNodeUI(UINT_PTR node_struct) : _root((PVOID)node_struct)
+{
+
 }
 
-static void unspecified_bool_xml_node(CXmlNodeUI***)
+void unspecified_bool_xml_node(CXmlNodeUI***)
 {
 }
 
@@ -426,9 +431,9 @@ CXmlNodeUI CXmlNodeUI::find_child_by_attribute(LPCWSTR name, LPCWSTR attr_name, 
 	return CXmlNodeUI(impxmlnode(_root).find_child_by_attribute(XMLSTRW(name), XMLSTRW(attr_name), attr_value).internal_object());
 }
 
-PVOID CXmlNodeUI::internal_object() const
+UINT_PTR CXmlNodeUI::internal_object() const
 {
-	return _root;
+	return (UINT_PTR)_root;
 }
 
 struct ui_xml_string_writer : ui_pugi::xml_writer

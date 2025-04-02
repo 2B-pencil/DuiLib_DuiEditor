@@ -441,7 +441,7 @@ public:
 		REG_CONTROL_FUNPR(bool,			RemoveAt,		(int iIndex, bool bDoNotDestroy		));
 		REG_CONTROL_FUNPR(void,			RemoveAll,		()									);
 
-		REG_CONTROL_FUNPR(RECT,	 GetInset,				() const				);
+		REG_CONTROL_FUNPR(CDuiRect,	 GetInset,				() const				);
 		REG_CONTROL_FUNPR(void,	 SetInset,				(RECT rcInset)			);
 		REG_CONTROL_FUNPR(int,	 GetChildPadding,		() const				);
 		REG_CONTROL_FUNPR(void,	 SetChildPadding,		(int iPadding)			);

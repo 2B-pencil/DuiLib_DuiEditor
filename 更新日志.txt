@@ -440,10 +440,18 @@ CXmlNodeUI child(LPCWSTR name) const;
 1，xml编辑器列出属性，但子控件和父控件重复属性时，会重复。典型的就是name属性。
 
 
-
-
 2025-03-03
 1，升级angelscript到2.37.0，修复x64系统脚本调用SetText乱码问题。
 2，修改xmake脚本，可以正常编译DuiLib,DuiPlugin,DuiScript。但是DuiPreview和DuiEditor编译依然有点问题。
+
+
+2025-03-24
+1，修复设计器BUG，dpi缩放时，float控件的对齐工具等等。
+2，调整菜单位置。
+3，部分调整。
+
+
+
+
 
 

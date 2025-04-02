@@ -102,7 +102,7 @@ namespace DuiLib
 		virtual bool IsAutoCalcWidth() const override;
 		virtual void SetAutoCalcWidth(bool bAutoCalcWidth) override;
 
-		virtual RECT GetInset() const override;
+		virtual CDuiRect GetInset() const override;
 		virtual void SetInset(RECT rcInset) override;
 
 		virtual RECT GetTextPadding() const override;

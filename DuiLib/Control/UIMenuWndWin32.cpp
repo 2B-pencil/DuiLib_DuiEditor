@@ -359,15 +359,11 @@ namespace DuiLib {
 			return;
 		}
 
-		const int nWidth = m_pm.GetInitSize().cx;
-		const int nHeight = m_pm.GetInitSize().cy;
-		const int nMenuInset = pMenuRoot->GetInset().bottom + pMenuRoot->GetInset().top;
-
 		RECT rcWorkArea;
 		SystemParametersInfo(SPI_GETWORKAREA, 0, &rcWorkArea, 0);
 
 		POINT ptBase = m_BasedPoint;
-		ptBase.y += GetSystemMetrics(SM_CYMENU); // 加上任务栏的高度
+		//ptBase.y += GetSystemMetrics(SM_CYMENU); // 加上任务栏的高度
 
 		HMONITOR hMonitor = MonitorFromPoint(ptBase, MONITOR_DEFAULTTONEAREST);
 		MONITORINFO mi = { sizeof(mi) };
@@ -377,9 +373,15 @@ namespace DuiLib {
 			return;
 		}
 
-		RECT rcMenu = { 0 };
-		rcMenu.right = rcMenu.left + nWidth;
-		rcMenu.bottom = rcMenu.top + nHeight + nMenuInset;
+		SIZE szAvailable = { rcWorkArea.right - rcWorkArea.left, rcWorkArea.bottom - rcWorkArea.top };
+		szAvailable = pMenuRoot->EstimateSize(szAvailable);
+		CDuiRect rcInset = pMenuRoot->GetInset();
+		szAvailable.cx += rcInset.left + rcInset.right;
+		szAvailable.cy += rcInset.top + rcInset.bottom;
+		m_pm.SetInitSize(szAvailable.cx, szAvailable.cy);
+
+		const int nWidth = m_pm.GetInitSize().cx;
+		const int nHeight = m_pm.GetInitSize().cy;
 
 		if (ptBase.x < mi.rcWork.left)
 		{
@@ -400,8 +402,8 @@ namespace DuiLib {
 			ptBase.y = mi.rcWork.top;
 		}
 
-		::SetWindowPos(m_hWnd, HWND_TOPMOST, ptBase.x, ptBase.y, nWidth, nHeight + nMenuInset, SWP_SHOWWINDOW);
-		MoveWindow(m_hWnd, ptBase.x, ptBase.y, nWidth, nHeight, FALSE);
+		::SetWindowPos(m_hWnd, HWND_TOPMOST, ptBase.x, ptBase.y, nWidth, nHeight, SWP_SHOWWINDOW);
+		::MoveWindow(m_hWnd, ptBase.x, ptBase.y, nWidth, nHeight, FALSE);
 	}
 
 	void CMenuWndWin32::ResizeSubMenu()

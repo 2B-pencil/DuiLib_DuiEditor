@@ -24,9 +24,11 @@ namespace DuiLib
 
 		POINT ScalePoint(POINT ptPoint);
 		void ScalePoint(POINT *pPoint);
+		void ScalePointBack(POINT *pPoint);
 
 		SIZE ScaleSize(SIZE szSize);
 		void ScaleSize(SIZE *pSize);
+		void ScaleSizeBack(SIZE *pSize);
 
 
 	protected:

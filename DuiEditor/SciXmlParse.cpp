@@ -433,7 +433,7 @@ void CSciXmlParse::AddUIFont(xml_node node, xml_node nodeSample)
 	while(nodeprev)
 	{
 		if(nodeprev.type() == node_element) break;
-		nodeprev = node.previous_sibling();
+		nodeprev = nodeprev.previous_sibling();
 	}
 	if(nodeprev)
 	{
@@ -514,7 +514,7 @@ void CSciXmlParse::AddUIDefault(xml_node node, xml_node nodeSample)
 	while(nodeprev)
 	{
 		if(nodeprev.type() == node_element) break;
-		nodeprev = node.previous_sibling();
+		nodeprev = nodeprev.previous_sibling();
 	}
 	if(nodeprev)
 	{
@@ -588,7 +588,7 @@ void CSciXmlParse::AddUIStyle(xml_node node, xml_node nodeSample)
 	while(nodeprev)
 	{
 		if(nodeprev.type() == node_element) break;
-		nodeprev = node.previous_sibling();
+		nodeprev = nodeprev.previous_sibling();
 	}
 	if(nodeprev)
 	{

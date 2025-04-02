@@ -1582,6 +1582,7 @@ LABEL_END:
 				ClearSelectedCells();
 				ClearSelectedRows();
 				Refresh();
+				SendGridNotify(DUI_MSGTYPE_ITEMRCLICK, -1, -1);
 				return;
 			}
 

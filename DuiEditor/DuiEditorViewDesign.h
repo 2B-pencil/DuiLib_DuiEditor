@@ -212,6 +212,14 @@ public:
 	afx_msg void OnUpdateItemFontList(CCmdUI *pCmdUI);
 	afx_msg BOOL OnFontListRange(UINT uID);
 	afx_msg void OnUpdateFontListRange(CCmdUI *pCmdUI);
+	afx_msg void OnFormatMoveUp();
+	afx_msg void OnUpdateFormatMoveUp(CCmdUI *pCmdUI);
+	afx_msg void OnFormatMoveDown();
+	afx_msg void OnUpdateFormatMoveDown(CCmdUI *pCmdUI);
+	afx_msg void OnFormatMoveLeft();
+	afx_msg void OnUpdateFormatMoveLeft(CCmdUI *pCmdUI);
+	afx_msg void OnFormatMoveRight();
+	afx_msg void OnUpdateFormatMoveRight(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // DuiEditorView.cpp 中的调试版本

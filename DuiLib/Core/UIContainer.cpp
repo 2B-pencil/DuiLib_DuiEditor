@@ -174,7 +174,7 @@ namespace DuiLib
 		m_bDelayedDestroy = bDelayed;
 	}
 
-	RECT CContainerUI::GetInset() const
+	CDuiRect CContainerUI::GetInset() const
 	{
 		if(m_pManager) return m_pManager->GetDPIObj()->ScaleRect(m_rcInset);
 		return m_rcInset;

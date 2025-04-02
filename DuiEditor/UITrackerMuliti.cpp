@@ -631,8 +631,15 @@ void CUITrackerMuliti::OnkeyUp()
 	for (int i=0;i<m_arrTracker.GetSize();i++)
 	{
 		CTrackerElement* pArrTracker = m_arrTracker.GetAt(i);
-		pArrTracker->m_rect.OffsetRect(0, -1);
-		GetUIManager()->UpdateControlPos(pArrTracker->m_node, pArrTracker->m_rect);
+		xml_node nodeCurrentControl = pArrTracker->m_node;
+		CControlUI *pCurrentControl = (CControlUI *)nodeCurrentControl.get_tag();
+		if(pCurrentControl->IsFloat())
+		{
+			CDuiRect rc = pArrTracker->m_pControl->GetPos();
+			pArrTracker->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
+			rc.Offset(0,-1);
+			GetUIManager()->UpdateControlPos(pArrTracker->m_node, rc);
+		}
 	}
 }
 
@@ -641,8 +648,15 @@ void CUITrackerMuliti::OnkeyDown()
 	for (int i=0;i<m_arrTracker.GetSize();i++)
 	{
 		CTrackerElement* pArrTracker = m_arrTracker.GetAt(i);
-		pArrTracker->m_rect.OffsetRect(0, 1);
-		GetUIManager()->UpdateControlPos(pArrTracker->m_node, pArrTracker->m_rect);
+		xml_node nodeCurrentControl = pArrTracker->m_node;
+		CControlUI *pCurrentControl = (CControlUI *)nodeCurrentControl.get_tag();
+		if(pCurrentControl->IsFloat())
+		{
+			CDuiRect rc = pArrTracker->m_pControl->GetPos();
+			pArrTracker->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
+			rc.Offset(0,1);
+			GetUIManager()->UpdateControlPos(pArrTracker->m_node, rc);
+		}
 	}
 }
 
@@ -651,8 +665,15 @@ void CUITrackerMuliti::OnkeyLeft()
 	for (int i=0;i<m_arrTracker.GetSize();i++)
 	{
 		CTrackerElement* pArrTracker = m_arrTracker.GetAt(i);
-		pArrTracker->m_rect.OffsetRect(-1, 0);
-		GetUIManager()->UpdateControlPos(pArrTracker->m_node, pArrTracker->m_rect);
+		xml_node nodeCurrentControl = pArrTracker->m_node;
+		CControlUI *pCurrentControl = (CControlUI *)nodeCurrentControl.get_tag();
+		if(pCurrentControl->IsFloat())
+		{
+			CDuiRect rc = pArrTracker->m_pControl->GetPos();
+			pArrTracker->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
+			rc.Offset(-1,0);
+			GetUIManager()->UpdateControlPos(pArrTracker->m_node, rc);
+		}
 	}
 }
 
@@ -661,8 +682,15 @@ void CUITrackerMuliti::OnkeyRight()
 	for (int i=0;i<m_arrTracker.GetSize();i++)
 	{
 		CTrackerElement* pArrTracker = m_arrTracker.GetAt(i);
-		pArrTracker->m_rect.OffsetRect(1, 0);
-		GetUIManager()->UpdateControlPos(pArrTracker->m_node, pArrTracker->m_rect);
+		xml_node nodeCurrentControl = pArrTracker->m_node;
+		CControlUI *pCurrentControl = (CControlUI *)nodeCurrentControl.get_tag();
+		if(pCurrentControl->IsFloat())
+		{
+			CDuiRect rc = pArrTracker->m_pControl->GetPos();
+			pArrTracker->m_pControl->GetManager()->GetDPIObj()->ScaleRectBack(rc);
+			rc.Offset(1,0);
+			GetUIManager()->UpdateControlPos(pArrTracker->m_node, rc);
+		}
 	}
 }
 

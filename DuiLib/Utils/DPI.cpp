@@ -96,6 +96,12 @@ namespace DuiLib
 		return ptScale;
 	}
 
+	void CDpiBase::ScalePointBack(POINT *pPoint)
+	{
+		pPoint->x = ScaleIntBack(pPoint->x);
+		pPoint->y = ScaleIntBack(pPoint->y);
+	}
+
 	void CDpiBase::ScaleSize(SIZE *pSize)
 	{
 		pSize->cx = ScaleInt(pSize->cx);
@@ -108,5 +114,11 @@ namespace DuiLib
 		szScale.cx = ScaleInt(szSize.cx);
 		szScale.cy = ScaleInt(szSize.cy);
 		return szScale;
+	}
+
+	void CDpiBase::ScaleSizeBack(SIZE *pSize)
+	{
+		pSize->cx = ScaleIntBack(pSize->cx);
+		pSize->cy = ScaleIntBack(pSize->cy);
 	}
 }
